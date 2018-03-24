@@ -18,6 +18,11 @@ $ make deps
 $ make build_osx
 ```
 
+## Test
+```
+$ make test
+```
+
 ## Run (OSX)
 ```
 $ ./bin/osx/sieben-server
