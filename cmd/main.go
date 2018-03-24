@@ -1,9 +1,15 @@
 package main
 
 import (
-	"fmt"
+	"github.com/sieben-server/pkg/network"
+)
+
+const (
+	port           = 9123
+	maxConnections = 16
 )
 
 func main() {
-	fmt.Println(":D")
+	server := network.NewTCPServer(port, maxConnections)
+	server.Start()
 }

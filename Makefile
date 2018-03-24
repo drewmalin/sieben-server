@@ -4,6 +4,7 @@ VERSION=1.0.0
 GOCMD=go
 GOBUILD=$(GOCMD) build
 GOCLEAN=$(GOCMD) clean
+GOTEST=$(GOCMD) test
 
 DEPCMD=dep
 
@@ -20,3 +21,6 @@ clean:
 
 deps:
 				$(DEPCMD) ensure
+
+test:
+				$(GOTEST) -v ./...
