@@ -11,7 +11,7 @@ DEPCMD=dep
 
 PROJECT_ROOT=github.com/$(APP)
 
-build: clean fmt test build_osx build_linux
+build: clean fmt build_osx build_linux test
 
 build_osx:
 		env GOOS=darwin GOARCH=amd64 $(GOBUILD) -o bin/osx/$(APP) $(PROJECT_ROOT)/cmd
