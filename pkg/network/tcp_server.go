@@ -43,7 +43,7 @@ func NewTCPServer(port int, maxConnections int) *TCPServer {
 // Start informs this server to begin listening on its port. New connections will be passed to new agents for handling,
 // and the agent lifecycle will be managed. Start will not return.
 func (server *TCPServer) Start() {
-	logger.Get().Printf("TCP Server startup on port %d", server.port)
+	logger.Get().Printf("TCP Server startup on port: %d, maximum allowed connections: %d", server.port, server.maxConnections)
 
 	listener, err := net.Listen(protocol, fmt.Sprintf(addressFormat, server.port))
 	if err != nil {

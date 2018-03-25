@@ -1,9 +1,12 @@
 package logger
 
 import (
+	"io"
 	"log"
 	"os"
 	"sync"
+
+	"github.com/spf13/viper"
 )
 
 type logger struct {
@@ -21,7 +24,13 @@ func Get() *logger {
 }
 
 func newLogger() *logger {
+	var writer io.Writer
+	if viper.GetString("log") == "STDOUT" {
+		writer = os.Stdout
+	} else {
+		// create file
+	}
 	return &logger{
-		Logger: log.New(os.Stdout, "", log.LstdFlags),
+		Logger: log.New(writer, "", log.LstdFlags),
 	}
 }
