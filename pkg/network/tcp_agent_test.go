@@ -1,23 +1,40 @@
 package network
 
-import "testing"
+import (
+	"net"
+	"testing"
+)
 
 func TestNewTCPAgent(t *testing.T) {
+	mockConnection := new(MockConn)
 
-}
+	tcpAgent1 := NewTCPAgent(mockConnection)
+	tcpAgent2 := NewTCPAgent(mockConnection)
 
-func TestRun(t *testing.T) {
+	var actualConn net.Conn
+	var expectedConn net.Conn
 
-}
+	actualConn = tcpAgent1.conn
+	expectedConn = mockConnection
 
-func TestRead(t *testing.T) {
+	if actualConn != expectedConn {
+		t.Errorf("Conn was expected to be: %s, but was: %s.", expectedConn, actualConn)
+	}
+	if tcpAgent1.id == "" {
+		t.Errorf("ID was unexpectedly empty.")
+	}
 
-}
+	actualConn = tcpAgent2.conn
+	expectedConn = mockConnection
 
-func TestWrite(t *testing.T) {
+	if actualConn != expectedConn {
+		t.Errorf("Conn was expected to be: %s, but was: %s.", expectedConn, actualConn)
+	}
+	if tcpAgent2.id == "" {
+		t.Errorf("ID was unexpectedly empty.")
+	}
 
-}
-
-func TestClose(t *testing.T) {
-
+	if tcpAgent1.id == tcpAgent2.id {
+		t.Errorf("ID1 and ID2 were unexpectedly equal.")
+	}
 }
