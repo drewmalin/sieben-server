@@ -7,3 +7,6 @@ install: true
 
 notifications:
   email: false
+
+script:
+  - make test
