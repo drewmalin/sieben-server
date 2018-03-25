@@ -3,7 +3,7 @@ go:
   - "1.10"
 
 # use dependencies in /vendor
-install: true
+# install: true
 
 notifications:
   email: false
