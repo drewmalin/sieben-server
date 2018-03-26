@@ -18,5 +18,6 @@ func NewConfig(path string) {
 
 	viper.SetDefault("port", 8080)
 	viper.SetDefault("maxConnections", 16)
+	viper.SetDefault("protocol", "TCP")
 	viper.SetDefault("log", "FILE")
 }

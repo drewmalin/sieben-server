@@ -16,7 +16,12 @@ func main() {
 	port := viper.GetInt("port")
 	maxConnections := viper.GetInt("maxConnections")
 
-	//server := network.NewTCPServer(port, maxConnections)
-	server := network.NewWebSocketServer(port, maxConnections)
-	server.Start()
+	if viper.GetString("protocol") == "WEBSOCKET" {
+		server := network.NewWebSocketServer(port, maxConnections)
+		server.Start()
+	} else {
+		server := network.NewTCPServer(port, maxConnections)
+		server.Start()
+	}
+
 }
