@@ -27,6 +27,7 @@ const (
 var (
 	newline = []byte{'\n'}
 	space   = []byte{' '}
+	end     = []byte{'\r', '\n'}
 )
 
 // WebSocketAgent represents an individual web socket connection to a unique client.
@@ -88,7 +89,7 @@ func (agent *WebSocketAgent) Write(packet *Packet) (int, error) {
 		}
 		defer writer.Close()
 
-		return writer.Write(packet.Data)
+		return writer.Write(append(packet.Data, end...))
 	}
 	return 0, nil
 }
