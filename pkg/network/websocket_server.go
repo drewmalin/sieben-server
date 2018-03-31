@@ -47,25 +47,26 @@ func NewWebSocketServer(port int, maxConnections int) *WebSocketServer {
 // Start informs this server to begin listening on its port. New connections will be passed to new agents for handling,
 // and the agent lifecycle will be managed. Start will not return.
 func (server *WebSocketServer) Start() {
-	logger.Get().Printf("Web Socket Server startup on port: %d, maximum allowed connections: %d", server.port, server.maxConnections)
+	server.logStatus()
 
 	go server.handleNewConnections()
 
 	for {
 		select {
 		case conn := <-server.newConnChannel:
-			webSocketAgent := NewWebSocketAgent(conn)
+			webSocketAgent := NewWebSocketAgent(conn, server)
+			logger.Get().Printf("Agent %s opened", webSocketAgent.ID())
+
 			server.agentSet.Add(webSocketAgent)
-			logger.Get().Printf("New agent: %s", webSocketAgent.String())
 			server.logStatus()
 
-			go webSocketAgent.Run(server)
+			go webSocketAgent.Run()
 
 		case agent := <-server.deadAgentChannel:
 			server.agentSet.Remove(agent)
 			agent.Close()
+			logger.Get().Printf("Agent %s closed", agent.ID())
 
-			logger.Get().Printf("Agent %s closed", agent.String())
 			server.logStatus()
 
 		case packet := <-server.packetChannel:
@@ -114,5 +115,9 @@ func (server *WebSocketServer) Stop() {
 }
 
 func (server *WebSocketServer) logStatus() {
-	logger.Get().Printf("Current agent count: %d / %d", server.agentSet.Size(), server.maxConnections)
+	logger.Get().Printf("WebSocketServer status:")
+	logger.Get().Printf("\tCurrent agent count: %d / %d", server.agentSet.Size(), server.maxConnections)
+	for agent := range server.agentSet.Agents {
+		logger.Get().Printf("\t%s", agent.String())
+	}
 }

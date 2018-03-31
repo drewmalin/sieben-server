@@ -5,10 +5,11 @@ import (
 )
 
 func TestAdd(t *testing.T) {
+	mockServer := new(MockServer)
 	mockConnection := new(MockConn)
 
-	tcpAgent1 := NewTCPAgent(mockConnection)
-	tcpAgent2 := NewTCPAgent(mockConnection)
+	tcpAgent1 := NewTCPAgent(mockConnection, mockServer)
+	tcpAgent2 := NewTCPAgent(mockConnection, mockServer)
 
 	tcpAgentSet := NewAgentSet()
 
@@ -59,10 +60,11 @@ func TestAdd(t *testing.T) {
 }
 
 func TestRemove(t *testing.T) {
+	mockServer := new(MockServer)
 	mockConnection := new(MockConn)
 
-	tcpAgent1 := NewTCPAgent(mockConnection)
-	tcpAgent2 := NewTCPAgent(mockConnection)
+	tcpAgent1 := NewTCPAgent(mockConnection, mockServer)
+	tcpAgent2 := NewTCPAgent(mockConnection, mockServer)
 
 	tcpAgentSet := NewAgentSet()
 
@@ -116,10 +118,11 @@ func TestRemove(t *testing.T) {
 }
 
 func TestContains(t *testing.T) {
+	mockServer := new(MockServer)
 	mockConnection := new(MockConn)
 
-	tcpAgent1 := NewTCPAgent(mockConnection)
-	tcpAgent2 := NewTCPAgent(mockConnection)
+	tcpAgent1 := NewTCPAgent(mockConnection, mockServer)
+	tcpAgent2 := NewTCPAgent(mockConnection, mockServer)
 
 	tcpAgentSet := NewAgentSet()
 

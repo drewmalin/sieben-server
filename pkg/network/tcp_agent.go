@@ -10,40 +10,43 @@ import (
 
 // TCPAgent represents an individual TCP connection to a unique client.
 type TCPAgent struct {
-	id   string
-	conn net.Conn
+	id     string
+	conn   net.Conn
+	server Server
 }
 
 // NewTCPAgent instantiates a new TCPAgent.
-func NewTCPAgent(conn net.Conn) *TCPAgent {
+func NewTCPAgent(conn net.Conn, server Server) *TCPAgent {
 	id, err := uuid.NewUUID()
 	if err != nil {
 		panic(err)
 	}
 	agent := &TCPAgent{
-		id:   id.String(),
-		conn: conn,
+		id:     id.String(),
+		conn:   conn,
+		server: server,
 	}
 	return agent
 }
 
-func (agent *TCPAgent) String() string {
-	return fmt.Sprintf("(%s - %s)", agent.id, agent.conn.RemoteAddr().String())
+// ID returns the unique ID of this agent.
+func (agent *TCPAgent) ID() string {
+	return agent.id
 }
 
 // Run is the business.
-func (agent *TCPAgent) Run(server Server) {
+func (agent *TCPAgent) Run() {
 	buffer := make([]byte, 1024)
 	for {
 		byteCount, err := agent.conn.Read(buffer)
 		if err != nil {
-			logger.Get().Printf("Agent %s disconnected by client", agent.String())
-			server.OnClosedAgent(agent)
+			logger.Get().Printf("Agent %s disconnected by client", agent.ID())
+			agent.server.OnClosedAgent(agent)
 			break
 		}
 		message := make([]byte, byteCount)
 		copy(message, buffer[:byteCount])
-		server.OnReceivePacket(&Packet{agent.id, message})
+		agent.server.OnReceivePacket(&Packet{agent.id, message})
 	}
 }
 
@@ -63,4 +66,8 @@ func (agent *TCPAgent) Write(packet *Packet) (int, error) {
 // Close closes this agent's connection.
 func (agent *TCPAgent) Close() error {
 	return agent.conn.Close()
+}
+
+func (agent *TCPAgent) String() string {
+	return fmt.Sprintf("(%s - %s)", agent.id, agent.conn.RemoteAddr().String())
 }

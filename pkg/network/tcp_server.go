@@ -43,7 +43,7 @@ func NewTCPServer(port int, maxConnections int) *TCPServer {
 // Start informs this server to begin listening on its port. New connections will be passed to new agents for handling,
 // and the agent lifecycle will be managed. Start will not return.
 func (server *TCPServer) Start() {
-	logger.Get().Printf("TCP Server startup on port: %d, maximum allowed connections: %d", server.port, server.maxConnections)
+	server.logStatus()
 
 	listener, err := net.Listen(protocol, fmt.Sprintf(addressFormat, server.port))
 	if err != nil {
@@ -56,18 +56,18 @@ func (server *TCPServer) Start() {
 		select {
 		case conn := <-server.newConnChannel:
 
-			tcpAgent := NewTCPAgent(conn)
+			tcpAgent := NewTCPAgent(conn, server)
 			server.agentSet.Add(tcpAgent)
-			logger.Get().Printf("New agent: %s", tcpAgent.String())
+			logger.Get().Printf("Agent %s opened", tcpAgent.ID())
 			server.logStatus()
 
-			go tcpAgent.Run(server)
+			go tcpAgent.Run()
 
 		case agent := <-server.deadAgentChannel:
 			server.agentSet.Remove(agent)
 			agent.Close()
 
-			logger.Get().Printf("Agent %s closed", agent.String())
+			logger.Get().Printf("Agent %s closed", agent.ID())
 			server.logStatus()
 
 		case packet := <-server.packetChannel:
@@ -111,5 +111,9 @@ func (server *TCPServer) Stop() {
 }
 
 func (server *TCPServer) logStatus() {
-	logger.Get().Printf("Current agent count: %d / %d", server.agentSet.Size(), server.maxConnections)
+	logger.Get().Printf("TCPServer status:")
+	logger.Get().Printf("\tCurrent agent count: %d / %d", server.agentSet.Size(), server.maxConnections)
+	for agent := range server.agentSet.Agents {
+		logger.Get().Printf("\t%s", agent.String())
+	}
 }

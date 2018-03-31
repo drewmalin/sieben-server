@@ -6,10 +6,11 @@ import (
 )
 
 func TestNewTCPAgent(t *testing.T) {
+	mockServer := new(MockServer)
 	mockConnection := new(MockConn)
 
-	tcpAgent1 := NewTCPAgent(mockConnection)
-	tcpAgent2 := NewTCPAgent(mockConnection)
+	tcpAgent1 := NewTCPAgent(mockConnection, mockServer)
+	tcpAgent2 := NewTCPAgent(mockConnection, mockServer)
 
 	var actualConn net.Conn
 	var expectedConn net.Conn
