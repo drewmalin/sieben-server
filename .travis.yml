@@ -5,7 +5,7 @@ go:
 notifications:
   email: false
 
-go_import_path: github.com/sieben-server
+go_import_path: github.com/drewmalin/sieben-server
 
 script:
   - make test

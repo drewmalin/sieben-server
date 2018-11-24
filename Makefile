@@ -9,7 +9,7 @@ GOFMT=$(GOCMD) fmt
 
 DEPCMD=dep
 
-PROJECT_ROOT=github.com/$(APP)
+PROJECT_ROOT=github.com/drewmalin/$(APP)
 
 build: clean fmt build_osx build_linux build_win test
 

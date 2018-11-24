@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/sieben-server/config"
-	"github.com/sieben-server/pkg/network"
+	"github.com/drewmalin/sieben-server/config"
+	"github.com/drewmalin/sieben-server/pkg/network"
 	"github.com/spf13/viper"
 )
 

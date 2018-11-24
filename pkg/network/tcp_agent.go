@@ -5,7 +5,7 @@ import (
 	"net"
 
 	"github.com/google/uuid"
-	"github.com/sieben-server/pkg/logger"
+	"github.com/drewmalin/sieben-server/pkg/logger"
 )
 
 // TCPAgent represents an individual TCP connection to a unique client.

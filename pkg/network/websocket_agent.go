@@ -7,7 +7,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
-	"github.com/sieben-server/pkg/logger"
+	"github.com/drewmalin/sieben-server/pkg/logger"
 )
 
 const (

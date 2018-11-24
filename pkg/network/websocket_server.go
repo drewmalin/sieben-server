@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/websocket"
-	"github.com/sieben-server/pkg/logger"
+	"github.com/drewmalin/sieben-server/pkg/logger"
 )
 
 // WebSocketServer is a Server which handles its connections via web sockets.

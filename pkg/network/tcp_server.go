@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/sieben-server/pkg/logger"
+	"github.com/drewmalin/sieben-server/pkg/logger"
 )
 
 const (
